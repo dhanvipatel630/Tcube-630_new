@@ -1,0 +1,31 @@
+#navbar{
+    height: 20px;
+    background-color: #D6E4F0;
+    color: rgb(206, 194, 194);
+}
+a{
+    margin-right: 250px;
+    text;
+    text-decoration: none;
+    color: #023bcb;
+} 
+a1 {
+
+    margin-right: 250px;
+    text;
+    text-decoration: none;
+    color: #064df3;
+}
+
+div{
+    background-color: #e2e4e9;
+    color: rgb(48, 92, 164);
+    text-align: left;
+    border: 10px solid rgba(13, 96, 228,0.9);
+    padding: 30px;
+}
+footer{
+    background-color: #0f1111;
+    color: white;
+    text-align: center;
+  }

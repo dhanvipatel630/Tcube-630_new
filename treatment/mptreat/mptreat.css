@@ -1,0 +1,104 @@
+body {font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #D6E4F0;
+    ;}
+       body {
+      
+    }
+    h1 {
+      text-align: center;
+      padding: 20px;
+      background: #1E56A0;
+      color: #D6E4F0;
+      margin: 0;
+    }
+
+
+
+.image-box {
+  width: 400px;          /* adjust width as needed */
+  height: 200px;         /* adjust height as needed */
+  border: 2px solid #333; /* border of the box */
+  overflow: hidden;      /* to crop overflow from img */
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-box img {
+  width: 100%;
+  height: auto;
+  /* You can also use object-fit to control how it fills the box */
+  object-fit: contain;  /* will fill the box & crop overflow */
+}
+div{
+    width: 400px;
+    padding: 20px;
+    height: fit-content;
+    background-color: rgb(155, 218, 245);
+    overflow: hidden;
+    text-align: center;
+    text-decoration: double;
+    border: 2px solid;
+    display: inline-block;
+    align-items: center;
+}
+body{
+    background-color: rgba(239, 11, 122, 0.2) ;
+}
+
+ #navbar{
+    height: 40px;
+    width: 100%;
+    background-color: #03233e;
+    color: rgb(206, 194, 194);
+    
+}
+a{
+    margin-right: 250px;
+    text-align: center;
+    text-decoration: none;
+    color: #2985e2;
+} 
+a1 {
+
+    margin-right: 250px;
+    text-align: center;
+    text-decoration: none;
+    color: #1658f1;
+}
+footer{
+    background-color: #0f1111;
+    color: white;
+    text-align: center;
+  }
+ 
+   div.image-box:hover{
+    background-color: rgb(112, 148, 225);
+    color: rgb(205, 184, 184); */
+     font-size: 20px; */
+     transform: scale(2,2); */
+     transform: rotate(360deg); */
+     transform: skew(10deg);
+
+}
+
+div.image-box:active{
+background-color: rgb(75, 88, 119);
+
+}
+div.info:hover{
+    background-color: rgb(112, 148, 225);
+    color: rgb(19, 1, 1); */
+     font-size: 20px; */
+     transform: scale(2,2); */
+     transform: rotate(360deg); */
+     transform: skew(10deg);
+
+}
+
+div.info:active{
+background-color: rgb(75, 88, 119);
+
+}
