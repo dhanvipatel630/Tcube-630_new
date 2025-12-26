@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Hospitals in {{ state.name }} - T-Cube{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="{{ url_for('index') }}">Home</a>
+            <span>→</span>
+            <a href="{{ url_for('state_detail', state_id=state.id) }}">{{ state.name }}</a>
+            <span>→</span>
+            <span>Treatment</span>
+        </nav>
+        <h1 class="page-title">
+            <span class="page-icon">🏥</span>
+            Hospitals in {{ state.name }}
+        </h1>
+        <p class="page-subtitle">Find {{ hospitals|length }} quality healthcare facilities</p>
+    </div>
+</section>
+
+<section class="filters-section">
+    <div class="container">
+        <div class="filters-container">
+            <form method="GET" class="filters-form">
+                <div class="filter-group">
+                    <input type="text" name="search" placeholder="Search hospitals..." 
+                           value="{{ current_search }}" class="filter-input">
+                </div>
+
+                <div class="filter-group">
+                    <select name="type" class="filter-select">
+                        <option value="">All Types</option>
+                        {% for type in hospital_types %}
+                        <option value="{{ type }}" 
+                                {% if type == current_type %}selected{% endif %}>
+                            {{ type }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <select name="sort" class="filter-select">
+                        <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>
+                            Sort by Rating
+                        </option>
+                        <option value="name" {% if current_sort == 'name' %}selected{% endif %}>
+                            Sort by Name
+                        </option>
+                    </select>
+                </div>
+
+                <div class="filter-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="emergency" {% if current_emergency %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                        Emergency Services Only
+                    </label>
+                </div>
+
+                <button type="submit" class="filter-btn">Apply Filters</button>
+                <a href="{{ url_for('treatment', state_id=state.id) }}" class="clear-btn">Clear</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="items-section">
+    <div class="container">
+        {% if hospitals %}
+            <div class="items-grid">
+                {% for hospital in hospitals %}
+                <div class="item-card">
+                    <div class="item-image">
+                        <img src="{{ hospital.image_url }}" alt="{{ hospital.name }}" loading="lazy">
+                        <div class="item-rating">⭐ {{ hospital.rating }}</div>
+                        {% if hospital.emergency_services %}
+                        <div class="emergency-badge">🚨 Emergency</div>
+                        {% endif %}
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-title">{{ hospital.name }}</h3>
+                            <span class="item-category">{{ hospital.hospital_type }}</span>
+                        </div>
+                        <p class="item-location">📍 {{ hospital.location }}</p>
+                        <p class="item-description">{{ hospital.description }}</p>
+
+                        <div class="item-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Specialties:</span>
+                                <span class="detail-value">{{ hospital.specialties }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Bed Count:</span>
+                                <span class="detail-value">{{ hospital.bed_count }} beds</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Contact:</span>
+                                <span class="detail-value">{{ hospital.contact }}</span>
+                            </div>
+                        </div>
+
+                        <div class="hospital-features">
+                            {% if hospital.emergency_services %}
+                            <span class="feature-badge emergency">🚨 Emergency 24/7</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-results">
+                <h3>No hospitals found</h3>
+                <p>Try adjusting your search or filters</p>
+                <a href="{{ url_for('treatment', state_id=state.id) }}" class="btn-primary">Show All</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="back-section">
+    <div class="container">
+        <a href="{{ url_for('state_detail', state_id=state.id) }}" class="back-btn">
+            ← Back to {{ state.name }}
+        </a>
+    </div>
+</section>
+{% endblock %}

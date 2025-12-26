@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Travel in {{ state.name }} - T-Cube{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="{{ url_for('index') }}">Home</a>
+            <span>→</span>
+            <a href="{{ url_for('state_detail', state_id=state.id) }}">{{ state.name }}</a>
+            <span>→</span>
+            <span>Travel</span>
+        </nav>
+        <h1 class="page-title">
+            <span class="page-icon">🏛️</span>
+            Travel in {{ state.name }}
+        </h1>
+        <p class="page-subtitle">Discover {{ destinations|length }} amazing destinations</p>
+    </div>
+</section>
+
+<section class="filters-section">
+    <div class="container">
+        <div class="filters-container">
+            <form method="GET" class="filters-form">
+                <div class="filter-group">
+                    <input type="text" name="search" placeholder="Search destinations..." 
+                           value="{{ current_search }}" class="filter-input">
+                </div>
+
+                <div class="filter-group">
+                    <select name="category" class="filter-select">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}" 
+                                {% if category == current_category %}selected{% endif %}>
+                            {{ category }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <select name="sort" class="filter-select">
+                        <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>
+                            Sort by Rating
+                        </option>
+                        <option value="name" {% if current_sort == 'name' %}selected{% endif %}>
+                            Sort by Name
+                        </option>
+                    </select>
+                </div>
+
+                <button type="submit" class="filter-btn">Apply Filters</button>
+                <a href="{{ url_for('travel', state_id=state.id) }}" class="clear-btn">Clear</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="items-section">
+    <div class="container">
+        {% if destinations %}
+            <div class="items-grid">
+                {% for destination in destinations %}
+                <div class="item-card">
+                    <div class="item-image">
+                        <img src="{{ destination.image_url }}" alt="{{ destination.name }}" loading="lazy">
+                        <div class="item-rating">⭐ {{ destination.rating }}</div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-title">{{ destination.name }}</h3>
+                            <span class="item-category">{{ destination.category }}</span>
+                        </div>
+                        <p class="item-location">📍 {{ destination.location }}</p>
+                        <p class="item-description">{{ destination.description }}</p>
+
+                        <div class="item-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Entry Fee:</span>
+                                <span class="detail-value">{{ destination.entry_fee }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Best Time:</span>
+                                <span class="detail-value">{{ destination.best_time }}</span>
+                            </div>
+                            {% if destination.contact != 'N/A' %}
+                            <div class="detail-item">
+                                <span class="detail-label">Contact:</span>
+                                <span class="detail-value">{{ destination.contact }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-results">
+                <h3>No destinations found</h3>
+                <p>Try adjusting your search or filters</p>
+                <a href="{{ url_for('travel', state_id=state.id) }}" class="btn-primary">Show All</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="back-section">
+    <div class="container">
+        <a href="{{ url_for('state_detail', state_id=state.id) }}" class="back-btn">
+            ← Back to {{ state.name }}
+        </a>
+    </div>
+</section>
+{% endblock %}

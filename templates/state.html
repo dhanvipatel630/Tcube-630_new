@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}{{ state.name }} - T-Cube{% endblock %}
+
+{% block content %}
+<!-- State Header -->
+<section class="state-header">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <a href="{{ url_for('index') }}">Home</a>
+            <span class="breadcrumb-separator">→</span>
+            <span class="breadcrumb-current">{{ state.name }}</span>
+        </nav>
+        
+        <div class="state-hero">
+            <div class="state-hero-image">
+                <img src="{{ state.image_url }}" alt="{{ state.name }}" loading="lazy">
+                {% if state.is_featured %}
+                    <div class="featured-badge">⭐ Featured State</div>
+                {% endif %}
+            </div>
+            
+            <div class="state-hero-content">
+                <h1 class="state-title">{{ state.name }}</h1>
+                
+                {% if state.capital %}
+                    <p class="state-capital">
+                        <span class="label-icon">🏛️</span>
+                        Capital: <strong>{{ state.capital }}</strong>
+                    </p>
+                {% endif %}
+                
+                <p class="state-description">{{ state.description }}</p>
+                
+                <div class="state-info-grid">
+                    {% if state.population %}
+                        <div class="info-item">
+                            <span class="info-icon">👥</span>
+                            <div class="info-content">
+                                <span class="info-label">Population</span>
+                                <span class="info-value">{{ "{:,}".format(state.population) }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if state.area_sq_km %}
+                        <div class="info-item">
+                            <span class="info-icon">📏</span>
+                            <div class="info-content">
+                                <span class="info-label">Area</span>
+                                <span class="info-value">{{ "{:,}".format(state.area_sq_km) }} km²</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if state.languages %}
+                        <div class="info-item">
+                            <span class="info-icon">🗣️</span>
+                            <div class="info-content">
+                                <span class="info-label">Languages</span>
+                                <span class="info-value">{{ state.languages }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if state.best_time_to_visit %}
+                        <div class="info-item">
+                            <span class="info-icon">🌤️</span>
+                            <div class="info-content">
+                                <span class="info-label">Best Time to Visit</span>
+                                <span class="info-value">{{ state.best_time_to_visit }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                {% if state.famous_for %}
+                    <div class="famous-for">
+                        <h3>Famous For</h3>
+                        <p>{{ state.famous_for }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Stats -->
+<section class="quick-stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🏛️</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ state.destination_count }}</div>
+                    <div class="stat-label">Tourist Destinations</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🍽️</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ state.restaurant_count }}</div>
+                    <div class="stat-label">Restaurants</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🏥</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ state.hospital_count }}</div>
+                    <div class="stat-label">Hospitals</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Module Navigation -->
+<section class="module-nav">
+    <div class="container">
+        <div class="module-cards">
+            <a href="{{ url_for('travel', state_id=state.id) }}" class="module-card">
+                <div class="module-icon">🏛️</div>
+                <div class="module-content">
+                    <h3>Travel & Tourism</h3>
+                    <p>Explore {{ state.destination_count }} amazing destinations</p>
+                    <span class="module-cta">Discover Places →</span>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('taste', state_id=state.id) }}" class="module-card">
+                <div class="module-icon">🍽️</div>
+                <div class="module-content">
+                    <h3>Taste & Cuisine</h3>
+                    <p>Find {{ state.restaurant_count }} authentic restaurants</p>
+                    <span class="module-cta">Explore Food →</span>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('treatment', state_id=state.id) }}" class="module-card">
+                <div class="module-icon">🏥</div>
+                <div class="module-content">
+                    <h3>Treatment & Healthcare</h3>
+                    <p>Locate {{ state.hospital_count }} healthcare facilities</p>
+                    <span class="module-cta">Find Healthcare →</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Top Highlights -->
+<section class="highlights">
+    <div class="container">
+        <!-- Top Destinations -->
+        {% if top_destinations %}
+            <div class="highlight-section">
+                <h2 class="section-title">
+                    <span class="title-icon">🏛️</span>
+                    Top Destinations
+                </h2>
+                
+                <div class="highlight-grid">
+                    {% for destination in top_destinations %}
+                        <div class="highlight-card">
+                            <div class="highlight-image">
+                                <img src="{{ destination.image_url }}" alt="{{ destination.name }}" loading="lazy">
+                                <div class="rating-badge">⭐ {{ destination.rating }}</div>
+                            </div>
+                            <div class="highlight-content">
+                                <h3>{{ destination.name }}</h3>
+                                <p class="location">📍 {{ destination.location }}</p>
+                                <p class="description">{{ destination.short_description or destination.description[:100] + '...' }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="section-cta">
+                    <a href="{{ url_for('travel', state_id=state.id) }}" class="btn btn-outline">
+                        View All Destinations
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Top Restaurants -->
+        {% if top_restaurants %}
+            <div class="highlight-section">
+                <h2 class="section-title">
+                    <span class="title-icon">🍽️</span>
+                    Top Restaurants
+                </h2>
+                
+                <div class="highlight-grid">
+                    {% for restaurant in top_restaurants %}
+                        <div class="highlight-card">
+                            <div class="highlight-image">
+                                <img src="{{ restaurant.image_url }}" alt="{{ restaurant.name }}" loading="lazy">
+                                <div class="rating-badge">⭐ {{ restaurant.rating }}</div>
+                            </div>
+                            <div class="highlight-content">
+                                <h3>{{ restaurant.name }}</h3>
+                                <p class="location">📍 {{ restaurant.location }}</p>
+                                <p class="description">{{ restaurant.short_description or restaurant.description[:100] + '...' }}</p>
+                                <div class="restaurant-meta">
+                                    <span class="cuisine">{{ restaurant.cuisine_type }}</span>
+                                    <span class="price">{{ restaurant.price_range }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="section-cta">
+                    <a href="{{ url_for('taste', state_id=state.id) }}" class="btn btn-outline">
+                        View All Restaurants
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Top Hospitals -->
+        {% if top_hospitals %}
+            <div class="highlight-section">
+                <h2 class="section-title">
+                    <span class="title-icon">🏥</span>
+                    Top Hospitals
+                </h2>
+                
+                <div class="highlight-grid">
+                    {% for hospital in top_hospitals %}
+                        <div class="highlight-card">
+                            <div class="highlight-image">
+                                <img src="{{ hospital.image_url }}" alt="{{ hospital.name }}" loading="lazy">
+                                <div class="rating-badge">⭐ {{ hospital.rating }}</div>
+                            </div>
+                            <div class="highlight-content">
+                                <h3>{{ hospital.name }}</h3>
+                                <p class="location">📍 {{ hospital.location }}</p>
+                                <p class="description">{{ hospital.short_description or hospital.description[:100] + '...' }}</p>
+                                <div class="hospital-meta">
+                                    <span class="type">{{ hospital.hospital_type }}</span>
+                                    {% if hospital.emergency_services %}
+                                        <span class="emergency">🚨 Emergency</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="section-cta">
+                    <a href="{{ url_for('treatment', state_id=state.id) }}" class="btn btn-outline">
+                        View All Hospitals
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

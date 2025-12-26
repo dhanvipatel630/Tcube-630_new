@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}{{ state.name }} - T-Cube{% endblock %}
+
+{% block content %}
+<section class="state-hero">
+    <div class="state-hero-bg">
+        <img src="{{ state.image_url }}" alt="{{ state.name }}">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="state-hero-content">
+        <div class="container">
+            <nav class="breadcrumb">
+                <a href="{{ url_for('index') }}">Home</a>
+                <span>→</span>
+                <span>{{ state.name }}</span>
+            </nav>
+            <h1 class="state-title">{{ state.name }}</h1>
+            <p class="state-subtitle">Capital: {{ state.capital }}</p>
+            <p class="state-description">{{ state.description }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="modules-section">
+    <div class="container">
+        <h2 class="section-title">Explore {{ state.name }}</h2>
+        <div class="modules-grid">
+            <a href="{{ url_for('travel', state_id=state.id) }}" class="module-card travel-card">
+                <div class="module-icon">🏛️</div>
+                <div class="module-content">
+                    <h3>Travel & Tourism</h3>
+                    <p>Discover {{ state.destinations|length }} amazing destinations</p>
+                    <span class="module-count">{{ state.destinations|length }} Places</span>
+                </div>
+                <div class="module-arrow">→</div>
+            </a>
+
+            <a href="{{ url_for('taste', state_id=state.id) }}" class="module-card taste-card">
+                <div class="module-icon">🍽️</div>
+                <div class="module-content">
+                    <h3>Food & Restaurants</h3>
+                    <p>Explore {{ state.restaurants|length }} authentic dining experiences</p>
+                    <span class="module-count">{{ state.restaurants|length }} Restaurants</span>
+                </div>
+                <div class="module-arrow">→</div>
+            </a>
+
+            <a href="{{ url_for('treatment', state_id=state.id) }}" class="module-card treatment-card">
+                <div class="module-icon">🏥</div>
+                <div class="module-content">
+                    <h3>Healthcare & Hospitals</h3>
+                    <p>Find {{ state.hospitals|length }} quality healthcare facilities</p>
+                    <span class="module-count">{{ state.hospitals|length }} Hospitals</span>
+                </div>
+                <div class="module-arrow">→</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="quick-preview">
+    <div class="container">
+        <div class="preview-grid">
+            <!-- Top Destinations Preview -->
+            <div class="preview-section">
+                <h3>Top Destinations</h3>
+                <div class="preview-items">
+                    {% for destination in state.destinations[:3] %}
+                    <div class="preview-item">
+                        <img src="{{ destination.image_url }}" alt="{{ destination.name }}">
+                        <div class="preview-info">
+                            <h4>{{ destination.name }}</h4>
+                            <span class="rating">⭐ {{ destination.rating }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <a href="{{ url_for('travel', state_id=state.id) }}" class="view-all-btn">View All →</a>
+            </div>
+
+            <!-- Top Restaurants Preview -->
+            <div class="preview-section">
+                <h3>Top Restaurants</h3>
+                <div class="preview-items">
+                    {% for restaurant in state.restaurants[:3] %}
+                    <div class="preview-item">
+                        <img src="{{ restaurant.image_url }}" alt="{{ restaurant.name }}">
+                        <div class="preview-info">
+                            <h4>{{ restaurant.name }}</h4>
+                            <span class="rating">⭐ {{ restaurant.rating }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <a href="{{ url_for('taste', state_id=state.id) }}" class="view-all-btn">View All →</a>
+            </div>
+
+            <!-- Top Hospitals Preview -->
+            <div class="preview-section">
+                <h3>Top Hospitals</h3>
+                <div class="preview-items">
+                    {% for hospital in state.hospitals[:3] %}
+                    <div class="preview-item">
+                        <img src="{{ hospital.image_url }}" alt="{{ hospital.name }}">
+                        <div class="preview-info">
+                            <h4>{{ hospital.name }}</h4>
+                            <span class="rating">⭐ {{ hospital.rating }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <a href="{{ url_for('treatment', state_id=state.id) }}" class="view-all-btn">View All →</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

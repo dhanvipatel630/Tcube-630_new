@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Restaurants in {{ state.name }} - T-Cube{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="{{ url_for('index') }}">Home</a>
+            <span>→</span>
+            <a href="{{ url_for('state_detail', state_id=state.id) }}">{{ state.name }}</a>
+            <span>→</span>
+            <span>Taste</span>
+        </nav>
+        <h1 class="page-title">
+            <span class="page-icon">🍽️</span>
+            Restaurants in {{ state.name }}
+        </h1>
+        <p class="page-subtitle">Explore {{ restaurants|length }} authentic dining experiences</p>
+    </div>
+</section>
+
+<section class="filters-section">
+    <div class="container">
+        <div class="filters-container">
+            <form method="GET" class="filters-form">
+                <div class="filter-group">
+                    <input type="text" name="search" placeholder="Search restaurants..." 
+                           value="{{ current_search }}" class="filter-input">
+                </div>
+
+                <div class="filter-group">
+                    <select name="cuisine" class="filter-select">
+                        <option value="">All Cuisines</option>
+                        {% for cuisine in cuisines %}
+                        <option value="{{ cuisine }}" 
+                                {% if cuisine == current_cuisine %}selected{% endif %}>
+                            {{ cuisine }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <select name="sort" class="filter-select">
+                        <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>
+                            Sort by Rating
+                        </option>
+                        <option value="name" {% if current_sort == 'name' %}selected{% endif %}>
+                            Sort by Name
+                        </option>
+                    </select>
+                </div>
+
+                <button type="submit" class="filter-btn">Apply Filters</button>
+                <a href="{{ url_for('taste', state_id=state.id) }}" class="clear-btn">Clear</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="items-section">
+    <div class="container">
+        {% if restaurants %}
+            <div class="items-grid">
+                {% for restaurant in restaurants %}
+                <div class="item-card">
+                    <div class="item-image">
+                        <img src="{{ restaurant.image_url }}" alt="{{ restaurant.name }}" loading="lazy">
+                        <div class="item-rating">⭐ {{ restaurant.rating }}</div>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-title">{{ restaurant.name }}</h3>
+                            <span class="item-category">{{ restaurant.cuisine_type }}</span>
+                        </div>
+                        <p class="item-location">📍 {{ restaurant.location }}</p>
+                        <p class="item-description">{{ restaurant.description }}</p>
+
+                        <div class="item-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Price Range:</span>
+                                <span class="detail-value">{{ restaurant.price_range }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Famous Dishes:</span>
+                                <span class="detail-value">{{ restaurant.famous_dishes }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Contact:</span>
+                                <span class="detail-value">{{ restaurant.contact }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-results">
+                <h3>No restaurants found</h3>
+                <p>Try adjusting your search or filters</p>
+                <a href="{{ url_for('taste', state_id=state.id) }}" class="btn-primary">Show All</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="back-section">
+    <div class="container">
+        <a href="{{ url_for('state_detail', state_id=state.id) }}" class="back-btn">
+            ← Back to {{ state.name }}
+        </a>
+    </div>
+</section>
+{% endblock %}
